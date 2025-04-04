@@ -23,7 +23,7 @@ This project is a React-based Todo application built using Vite, TypeScript, and
 
 * **`src/contexts/auth-context.tsx`**: Provides the authentication context using React Context API. It manages user authentication state (login, signup, logout) and makes it available to other components.
 
-* **`src/hooks/use-todos.ts`/`useTodos.ts`**: Custom hooks to manage todo items state and logic (add, toggle, delete, reorder, edit). Uses Appwrite for data persistence.
+* **`src/hooks/useTodos.ts`**: Custom hooks to manage todo items state and logic (add, toggle, delete, reorder, edit). Uses Appwrite for data persistence.
 
 * **`src/layouts/auth-layout.tsx`**: Layout component for authentication pages (login/signup), centering the content on the screen.
 
@@ -51,6 +51,11 @@ This project is a React-based Todo application built using Vite, TypeScript, and
   - Handles migration from local storage to Appwrite
   - Cleans existing data before migration
   - Transforms todo format for persistence
+
+* **`src/utils/spa-routing-fix.ts`**: SPA routing fix utility that:
+  - Configures rewrite rules for Single Page Application routing
+  - Ensures all routes are handled by the React application
+  - Prevents 404 errors on page refresh in deployed environments
 
 **Data Flow:**
 
