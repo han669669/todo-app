@@ -5,6 +5,7 @@ import { LandingPage } from './pages/landing';
 import Login from './pages/auth/login';
 import SignUp from './pages/auth/signup';
 import Dashboard from './pages/dashboard';
+import { Analytics } from '@vercel/analytics/react';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <PrivateRoute path="/dashboard" component={Dashboard} />
         </Switch>
       </Router>
+      <Analytics />
     </AuthProvider>
   );
 }
