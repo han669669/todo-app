@@ -90,7 +90,7 @@ export const LandingPage = () => {
       <footer className="border-t border-divider py-8 mt-16">
         <div className="container mx-auto px-6 text-center md:text-left md:flex justify-between items-center">
           <div className="text-default-500 text-sm mb-4 md:mb-0">
-            © {new Date().getFullYear()} TodoApp. All rights reserved.
+            © {new Date().getFullYear()} TodoApp | made by <a href="https://github.com/han669669">han 🌟</a> 
           </div>
           <div className="flex gap-6 justify-center md:justify-start text-sm">
             {/* Using simple links instead of buttons for minimalism */}
