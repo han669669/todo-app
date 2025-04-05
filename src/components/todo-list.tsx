@@ -21,7 +21,12 @@ export const TodoList: React.FC<TodoListProps> = ({
   onReorder,
 }) => {
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 10,
+        tolerance: 3,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
@@ -70,7 +75,7 @@ export const TodoList: React.FC<TodoListProps> = ({
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={todos} strategy={verticalListSortingStrategy}>
-        <div className="space-y-2">
+        <div className="space-y-2 w-full max-w-full overflow-x-auto">
           {todos.map((todo) => (
             <SortableTodoItem
               key={todo.id}

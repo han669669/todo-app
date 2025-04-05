@@ -97,7 +97,7 @@ export default function Login() {
         <div className="flex justify-center">
           <Button
             variant="ghost"
-            onClick={() => setUseOTP(!useOTP)}
+            onPress={() => setUseOTP(!useOTP)}
             className="text-primary-500 hover:text-primary-600"
           >
             {useOTP ? 'Use Password Login' : 'Use OTP Login'}

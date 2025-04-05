@@ -99,10 +99,10 @@ export default function Dashboard() {
             <span className="text-default-600">Welcome, {user.name}</span>
           </NavbarItem>
           <NavbarItem>
-            <Button 
-              color="danger" 
+            <Button
+              color="danger"
               variant="light"
-              onClick={logout}
+              onPress={logout}
               endContent={<Icon icon="lucide:log-out" />}
             >
               Logout

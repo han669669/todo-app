@@ -44,8 +44,8 @@ export const SortableTodoItem: React.FC<SortableTodoItemProps> = ({
   return (
     <div
       ref={setNodeRef}
-      style={style}
-      className="flex items-center gap-2 p-3 bg-content1 rounded-lg"
+      style={{ ...style, touchAction: 'none' }}
+      className="flex flex-wrap items-center gap-2 p-3 bg-content1 rounded-lg w-full max-w-full"
     >
       <Button
         isIconOnly
@@ -57,12 +57,13 @@ export const SortableTodoItem: React.FC<SortableTodoItemProps> = ({
         <Icon icon="lucide:grip-vertical" className="text-default-400" />
       </Button>
       
-      <Checkbox
-        isSelected={todo.completed}
-        onValueChange={() => onToggle(todo.id)}
-        className="flex-1"
-      >
-        {isEditing ? (
+      {isEditing ? (
+        <>
+          <Checkbox
+            isSelected={todo.completed}
+            onValueChange={() => onToggle(todo.id)}
+            className="flex-1"
+          />
           <Input
             autoFocus
             value={editValue}
@@ -74,15 +75,21 @@ export const SortableTodoItem: React.FC<SortableTodoItemProps> = ({
             }}
             className="w-full"
           />
-        ) : (
-          <span 
+        </>
+      ) : (
+        <Checkbox
+          isSelected={todo.completed}
+          onValueChange={() => onToggle(todo.id)}
+          className="flex-1"
+        >
+          <span
             className={todo.completed ? 'line-through text-default-400' : ''}
             onDoubleClick={() => setIsEditing(true)}
           >
             {todo.title}
           </span>
-        )}
-      </Checkbox>
+        </Checkbox>
+      )}
 
       {!isEditing && (
         <Button
