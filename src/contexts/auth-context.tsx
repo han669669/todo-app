@@ -32,6 +32,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     userId: ''
   });
 
+  const sanitize = (str: string) => str.replace(/[<>]/g, '');
+
   useEffect(() => {
     const checkSession = async () => {
       try {
@@ -49,6 +51,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     try {
+      email = sanitize(email);
+      password = sanitize(password);
       // Delete any existing session first
       try {
         await account.deleteSession('current');
@@ -88,6 +92,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signup = async (email: string, password: string, name: string) => {
     try {
+      email = sanitize(email);
+      password = sanitize(password);
+      name = sanitize(name);
       // Delete any existing session first
       try {
         await account.deleteSession('current');
@@ -145,6 +152,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const initiateOTP = async (email: string) => {
     try {
+      email = sanitize(email);
       const sessionToken = await account.createEmailToken(
         ID.unique(),
         email,
@@ -179,6 +187,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const verifyOTP = async (secret: string) => {
     try {
+      secret = sanitize(secret);
       await account.createSession(otpData.userId, secret);
       const current = await account.get();
       setUser(current);

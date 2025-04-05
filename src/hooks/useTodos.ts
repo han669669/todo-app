@@ -8,6 +8,8 @@ export default function useTodos(userId: string) {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const sanitize = (str: string) => str.replace(/[<>]/g, '');
+
   useEffect(() => {
     fetchTodos();
   }, [userId]);
@@ -47,6 +49,7 @@ export default function useTodos(userId: string) {
 
   const addTodo = async (title: string) => {
     try {
+      title = sanitize(title);
       const order = todos.length > 0 ? Math.max(...todos.map(t => t.order || 0)) + 1 : 0;
       const response = await databases.createDocument(
         DATABASE_ID,

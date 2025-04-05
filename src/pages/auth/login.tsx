@@ -14,18 +14,20 @@ export default function Login() {
   const { login, loading, initiateOTP, verifyOTP, otpData } = useAuth();
   const history = useHistory();
 
+  const sanitize = (str: string) => str.replace(/[<>]/g, '');
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (useOTP) {
         if (!otpData.otpSent) {
-          await initiateOTP(email);
+          await initiateOTP(sanitize(email));
         } else {
-          await verifyOTP(otp);
+          await verifyOTP(sanitize(otp));
           history.push('/dashboard');
         }
       } else {
-        await login(email, password);
+        await login(sanitize(email), sanitize(password));
         history.push('/dashboard');
       }
     } catch (err) {

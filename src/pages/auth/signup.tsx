@@ -15,6 +15,8 @@ export default function Signup() {
   const { signup, loading, initiateOTP, verifyOTP, otpData } = useAuth();
   const history = useHistory();
 
+  const sanitize = (str: string) => str.replace(/[<>]/g, '');
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -22,14 +24,14 @@ export default function Signup() {
         if (!otpData.otpSent) {
           // Generate random password for OTP signup
           const randomPassword = Math.random().toString(36).slice(-10) + 'A1!';
-          await signup(email, randomPassword, name);
-          await initiateOTP(email);
+          await signup(sanitize(email), randomPassword, sanitize(name));
+          await initiateOTP(sanitize(email));
         } else {
-          await verifyOTP(otp);
+          await verifyOTP(sanitize(otp));
           history.push('/dashboard');
         }
       } else {
-        await signup(email, password, name);
+        await signup(sanitize(email), sanitize(password), sanitize(name));
         history.push('/dashboard');
       }
     } catch (err) {
