@@ -92,6 +92,7 @@ export default function useTodos(userId: string) {
   };
 
   const toggleTodo = async (id: string) => {
+    // console.log('toggleTodo called for id:', id);
     try {
       const todo = todos.find(t => t.id === id);
       if (!todo) return;

@@ -34,6 +34,17 @@ export const SortableTodoItem: React.FC<SortableTodoItemProps> = ({
     transition,
   };
 
+  // Debounced toggle handler
+  const toggleTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debouncedToggle = () => {
+    if (toggleTimeout.current) {
+      clearTimeout(toggleTimeout.current);
+    }
+    toggleTimeout.current = setTimeout(() => {
+      onToggle(todo.id);
+    }, 200);
+  };
+
   const handleEditSubmit = () => {
     if (editValue.trim() && editValue !== todo.title) {
       onEdit(todo.id, editValue);
@@ -44,26 +55,28 @@ export const SortableTodoItem: React.FC<SortableTodoItemProps> = ({
   return (
     <div
       ref={setNodeRef}
-      style={{ ...style, touchAction: 'none' }}
-      className="flex flex-wrap items-center gap-2 p-3 bg-content1 rounded-lg w-full max-w-full"
+      style={{ ...style }}
+      className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md w-full max-w-full border border-gray-200"
     >
       <Button
         isIconOnly
         variant="light"
         size="sm"
+        style={{ touchAction: 'none' }}
         {...attributes}
         {...listeners}
+        className="text-gray-500 hover:text-gray-700"
       >
-        <Icon icon="lucide:grip-vertical" className="text-default-400" />
+        <Icon icon="lucide:grip-vertical" />
       </Button>
-      
-      {isEditing ? (
-        <>
-          <Checkbox
-            isSelected={todo.completed}
-            onValueChange={() => onToggle(todo.id)}
-            className="flex-1"
-          />
+
+      <div className="flex-1 flex items-center gap-3">
+        <Checkbox
+          isSelected={todo.completed}
+          onValueChange={debouncedToggle}
+          className="shrink-0"
+        />
+        {isEditing ? (
           <Input
             autoFocus
             value={editValue}
@@ -73,44 +86,43 @@ export const SortableTodoItem: React.FC<SortableTodoItemProps> = ({
               if (e.key === 'Enter') handleEditSubmit();
               if (e.key === 'Escape') setIsEditing(false);
             }}
-            className="w-full"
+            className="w-full text-sm"
           />
-        </>
-      ) : (
-        <Checkbox
-          isSelected={todo.completed}
-          onValueChange={() => onToggle(todo.id)}
-          className="flex-1"
-        >
+        ) : (
           <span
-            className={todo.completed ? 'line-through text-default-400' : ''}
+            className={`flex-1 text-sm ${
+              todo.completed ? 'line-through text-gray-400' : 'text-gray-800'
+            }`}
             onDoubleClick={() => setIsEditing(true)}
           >
             {todo.title}
           </span>
-        </Checkbox>
-      )}
+        )}
+      </div>
 
-      {!isEditing && (
+      <div className="flex items-center gap-2">
+        {!isEditing && (
+          <Button
+            isIconOnly
+            variant="light"
+            size="sm"
+            onPress={() => setIsEditing(true)}
+            className="text-gray-500 hover:text-gray-700"
+          >
+            <Icon icon="lucide:edit" />
+          </Button>
+        )}
         <Button
           isIconOnly
+          color="danger"
           variant="light"
           size="sm"
-          onPress={() => setIsEditing(true)}
+          onPress={() => onDelete(todo.id)}
+          className="text-red-500 hover:text-red-700"
         >
-          <Icon icon="lucide:edit" />
+          <Icon icon="lucide:trash-2" />
         </Button>
-      )}
-
-      <Button
-        isIconOnly
-        color="danger"
-        variant="light"
-        size="sm"
-        onPress={() => onDelete(todo.id)}
-      >
-        <Icon icon="lucide:trash-2" />
-      </Button>
+      </div>
     </div>
   );
 };
